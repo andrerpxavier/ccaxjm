@@ -224,7 +224,7 @@ resource "azurerm_linux_virtual_machine" "web_vm" {
     version   = "latest"
   }
 
-  custom_data = base64encode(<<EOF
+  custom_data = base64encode(<<CUSTOM_DATA
 #!/bin/bash
 apt update -y
 apt install apache2 php php-mysqli unzip -y
@@ -296,7 +296,7 @@ try {
 EOF
 
 systemctl restart apache2
-EOF
+CUSTOM_DATA
   )
 }
 
