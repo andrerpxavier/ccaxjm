@@ -1,10 +1,16 @@
 <?php
     include('mysqli_connect.php'); // Este ficheiro deve definir $pdo com PDO
 
-    // SELECT
-    $sql = "SELECT id, marca, modelo, preco, armazenamento, ram, sistema_operativo FROM telemoveis";
-    $stmt = $pdo->query($sql);
-    $telemoveis = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $telemoveis = [];
+    if ($pdo !== null) {
+        try {
+            $sql = "SELECT id, marca, modelo, preco, armazenamento, ram, sistema_operativo FROM telemoveis";
+            $stmt = $pdo->query($sql);
+            $telemoveis = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $db_error = $e->getMessage();
+        }
+    }
 
     // ADICIONAR
     if (isset($_POST['adicionar'])) {
