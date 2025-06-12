@@ -194,10 +194,13 @@ CREATE TABLE telemoveis (
   sistema_operativo VARCHAR(50)
 );
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234';
+CREATE USER 'root'@'10.0.1.%' IDENTIFIED WITH mysql_native_password BY '1234';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'10.0.1.%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOSQL
 EOF
-  )
+)
+
 }
 
 resource "azurerm_linux_virtual_machine" "web_vm" {
