@@ -1,4 +1,5 @@
 <?php
+    include('mysqli_connect.php');
     include('db_queries.php');
     $error_message = $db_error;
 ?>
