@@ -13,7 +13,7 @@
     }
 
     // ADICIONAR
-    if (isset($_POST['adicionar'])) {
+    if (isset($_POST['adicionar']) && $pdo !== null) {
         $marca = $_POST['marca'];
         $modelo = $_POST['modelo'];
         $preco = $_POST['preco'];
@@ -39,9 +39,12 @@
             echo "Erro ao adicionar: " . $e->getMessage();
         }
     }
+    elseif (isset($_POST['adicionar'])) {
+        $db_error = $db_error ?: 'Ligação à base de dados indisponível';
+    }
 
     // APAGAR
-    if (isset($_POST['apagar'])) {
+    if (isset($_POST['apagar']) && $pdo !== null) {
         $id = $_POST['id'];
         try {
             $sql = "DELETE FROM telemoveis WHERE id = :id";
@@ -53,9 +56,12 @@
             echo "Erro ao apagar: " . $e->getMessage();
         }
     }
+    elseif (isset($_POST['apagar'])) {
+        $db_error = $db_error ?: 'Ligação à base de dados indisponível';
+    }
 
     // EDITAR
-    if (isset($_POST['guardar_editar'])) {
+    if (isset($_POST['guardar_editar']) && $pdo !== null) {
         $id = $_POST['id'];
         $marca = $_POST['marca'];
         $modelo = $_POST['modelo'];
@@ -88,5 +94,8 @@
         } catch (PDOException $e) {
             echo "Erro ao editar: " . $e->getMessage();
         }
+    }
+    elseif (isset($_POST['guardar_editar'])) {
+        $db_error = $db_error ?: 'Ligação à base de dados indisponível';
     }
 ?>
