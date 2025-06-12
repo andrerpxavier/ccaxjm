@@ -199,8 +199,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'10.0.1.%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOSQL
 EOF
-)
-
+  )
 }
 
 resource "azurerm_linux_virtual_machine" "web_vm" {
@@ -236,7 +235,7 @@ cat > index.php << 'EOPHP'
 <?php
 include 'db_queries.php';
 include 'mysqli_connect.php';
-$result = get_telemoveis($conn);
+$result = get_telemoveis(\$pdo);
 ?>
 <!DOCTYPE html>
 <html>
@@ -249,7 +248,7 @@ $result = get_telemoveis($conn);
         <tr>
             <th>ID</th><th>Marca</th><th>Modelo</th><th>Preço</th><th>Armazenamento</th><th>RAM</th><th>SO</th>
         </tr>
-        <?php while($row = \$result->fetch_assoc()): ?>
+        <?php foreach(\$result as \$row): ?>
         <tr>
             <td><?= \$row['id'] ?></td>
             <td><?= \$row['marca'] ?></td>
@@ -259,7 +258,7 @@ $result = get_telemoveis($conn);
             <td><?= \$row['ram'] ?> GB</td>
             <td><?= \$row['sistema_operativo'] ?></td>
         </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </table>
 </body>
 </html>
@@ -267,8 +266,9 @@ EOPHP
 
 cat > db_queries.php << 'EOF'
 <?php
-function get_telemoveis(\$conn) {
-    return \$conn->query("SELECT * FROM telemoveis");
+function get_telemoveis(\$pdo) {
+    \$stmt = \$pdo->query("SELECT * FROM telemoveis");
+    return \$stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 EOF
@@ -284,11 +284,11 @@ cat > sobre.php << 'EOF'
 </html>
 EOF
 
-cat > mysqli_connect.php << 'EOF'
+cat > mysqli_connect.php << EOF
 <?php
 try {
-    $pdo = new PDO("mysql:host=${azurerm_network_interface.nic_mysql.private_ip_address};dbname=telemoveis_bd", "root", "1234");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    \$pdo = new PDO("mysql:host=${azurerm_network_interface.nic_mysql.private_ip_address};dbname=telemoveis_bd", "root", "1234");
+    \$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException \$e) {
     die("Erro na ligação: " . \$e->getMessage());
 }
@@ -298,7 +298,6 @@ EOF
 systemctl restart apache2
 EOF
   )
-
 }
 
 output "web_public_ip" {
