@@ -1,13 +1,6 @@
 <?php
-    include('mysqli_connect.php');
-
-    $error_message = null;
-    if ($db_error !== null) {
-        $error_message = $db_error;
-        $telemoveis = [];
-    } else {
-        include('db_queries.php');
-    }
+    include('db_queries.php');
+    $error_message = $db_error;
 ?>
 
 <!DOCTYPE html>
