@@ -284,11 +284,13 @@ cat > sobre.php << 'EOF'
 </html>
 EOF
 
-cat > mysqli_connect.php << EOF
+cat > mysqli_connect.php << 'EOF'
 <?php
-\$conn = new mysqli("${azurerm_network_interface.nic_mysql.private_ip_address}", "root", "1234", "telemoveis_bd");
-if (\$conn->connect_error) {
-    die("Erro na ligação: " . \$conn->connect_error);
+try {
+    $pdo = new PDO("mysql:host=${azurerm_network_interface.nic_mysql.private_ip_address};dbname=telemoveis_bd", "root", "1234");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException \$e) {
+    die("Erro na ligação: " . \$e->getMessage());
 }
 ?>
 EOF
