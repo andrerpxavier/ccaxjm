@@ -1,6 +1,13 @@
 <?php
     include('mysqli_connect.php');
-    include('db_queries.php');
+
+    $error_message = null;
+    if ($db_error !== null) {
+        $error_message = $db_error;
+        $telemoveis = [];
+    } else {
+        include('db_queries.php');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +22,12 @@
 <body>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Catálogo de Telemóveis</h1>
+
+    <?php if ($error_message): ?>
+        <div class="alert alert-danger" role="alert">
+            Erro na ligação à base de dados: <?= htmlspecialchars($error_message) ?>
+        </div>
+    <?php endif; ?>
 
     <!-- Botão Adicionar -->
     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addModal">Adicionar Telemóvel</button>
