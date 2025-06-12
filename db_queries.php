@@ -1,5 +1,5 @@
 <?php
-    include('mysqli_connect.php'); // Este ficheiro deve definir $pdo com PDO
+    require_once __DIR__ . '/mysqli_connect.php'; // Este ficheiro deve definir $pdo com PDO
 
     $telemoveis = [];
     if ($pdo !== null) {
