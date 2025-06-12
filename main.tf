@@ -225,71 +225,27 @@ resource "azurerm_linux_virtual_machine" "web_vm" {
   custom_data = base64encode(<<EOF
 #!/bin/bash
 apt update -y
-apt install apache2 php php-mysqli unzip -y
+apt install apache2 php php-mysqli git unzip -y
 cd /var/www/html
 rm -rf *
 
-cat > index.php << 'EOPHP'
-<?php
-include 'db_queries.php';
-include 'mysqli_connect.php';
-$result = get_telemoveis($conn);
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Telemóveis</title>
-</head>
-<body>
-    <h1>Telemóveis</h1>
-    <table border="1">
-        <tr>
-            <th>ID</th><th>Marca</th><th>Modelo</th><th>Preço</th><th>Armazenamento</th><th>RAM</th><th>SO</th>
-        </tr>
-        <?php while($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= \$row['id'] ?></td>
-            <td><?= \$row['marca'] ?></td>
-            <td><?= \$row['modelo'] ?></td>
-            <td><?= \$row['preco'] ?></td>
-            <td><?= \$row['armazenamento'] ?> GB</td>
-            <td><?= \$row['ram'] ?> GB</td>
-            <td><?= \$row['sistema_operativo'] ?></td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
-</body>
-</html>
-EOPHP
+# Clonar os ficheiros da aplicação
+git clone https://github.com/andrerpxavier/ccaxjm.git temp
+cp temp/*.php .
+rm -rf temp
 
-cat > db_queries.php << 'EOF'
-<?php
-function get_telemoveis(\$conn) {
-    return \$conn->query("SELECT * FROM telemoveis");
-}
-?>
-EOF
-
-cat > sobre.php << 'EOF'
-<!DOCTYPE html>
-<html>
-<head><title>Sobre</title></head>
-<body>
-    <h1>Sobre este projeto</h1>
-    <p>Projeto de Computação em Nuvem — Gestão de Telemóveis</p>
-</body>
-</html>
-EOF
-
-cat > mysqli_connect.php << EOF
+# Criar mysqli_connect.php com o IP da VM MySQL
+cat > mysqli_connect.php << PHPEND
 <?php
 \$conn = new mysqli("${azurerm_network_interface.nic_mysql.private_ip_address}", "root", "1234", "telemoveis_bd");
 if (\$conn->connect_error) {
     die("Erro na ligação: " . \$conn->connect_error);
 }
 ?>
-EOF
+PHPEND
 
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
 systemctl restart apache2
 EOF
   )
