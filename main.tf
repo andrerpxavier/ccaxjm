@@ -180,6 +180,9 @@ apt update -y
 apt install mysql-server -y
 systemctl start mysql
 systemctl enable mysql
+sed -i 's/^bind-address.*/bind-address = 0.0.0.0/' \
+    /etc/mysql/mysql.conf.d/mysqld.cnf
+systemctl restart mysql
 
 mysql -u root <<EOSQL
 CREATE DATABASE telemoveis_bd;
