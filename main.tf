@@ -231,11 +231,11 @@ apt install apache2 php php-mysqli unzip -y
 cd /var/www/html
 rm -rf *
 
-cat > index.php << 'EOPHP'
+cat > index.php <<EOPHP
 <?php
 include 'db_queries.php';
 include 'mysqli_connect.php';
-$result = get_telemoveis(\$pdo);
+$result = get_telemoveis($pdo);
 ?>
 <!DOCTYPE html>
 <html>
@@ -248,15 +248,15 @@ $result = get_telemoveis(\$pdo);
         <tr>
             <th>ID</th><th>Marca</th><th>Modelo</th><th>Preço</th><th>Armazenamento</th><th>RAM</th><th>SO</th>
         </tr>
-        <?php foreach(\$result as \$row): ?>
+        <?php foreach(\$result as $row): ?>
         <tr>
-            <td><?= \$row['id'] ?></td>
-            <td><?= \$row['marca'] ?></td>
-            <td><?= \$row['modelo'] ?></td>
-            <td><?= \$row['preco'] ?></td>
-            <td><?= \$row['armazenamento'] ?> GB</td>
-            <td><?= \$row['ram'] ?> GB</td>
-            <td><?= \$row['sistema_operativo'] ?></td>
+            <td><?= $row['id'] ?></td>
+            <td><?= $row['marca'] ?></td>
+            <td><?= $row['modelo'] ?></td>
+            <td><?= $row['preco'] ?></td>
+            <td><?= $row['armazenamento'] ?> GB</td>
+            <td><?= $row['ram'] ?> GB</td>
+            <td><?= $row['sistema_operativo'] ?></td>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -264,22 +264,22 @@ $result = get_telemoveis(\$pdo);
 </html>
 EOPHP
 
-cat > db_queries.php << 'EOF'
+cat > db_queries.php <<EOF
 <?php
-function get_telemoveis(\$pdo) {
-    \$stmt = \$pdo->query("SELECT * FROM telemoveis");
+function get_telemoveis($pdo) {
+    \$stmt = $pdo->query("SELECT * FROM telemoveis");
     return \$stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 EOF
 
-cat > sobre.php << 'EOF'
+cat > sobre.php <<EOF
 <!DOCTYPE html>
 <html>
 <head><title>Sobre</title></head>
 <body>
     <h1>Sobre este projeto</h1>
-    <p>Projeto de Computação em Nuvem — Gestão de Telemóveis</p>
+    <p>Projeto de Computação em Nuvem - Gestão de Telemóveis</p>
 </body>
 </html>
 EOF
@@ -287,8 +287,8 @@ EOF
 cat > mysqli_connect.php << EOF
 <?php
 try {
-    \$pdo = new PDO("mysql:host=${azurerm_network_interface.nic_mysql.private_ip_address};dbname=telemoveis_bd", "root", "1234");
-    \$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO("mysql:host=${azurerm_network_interface.nic_mysql.private_ip_address};dbname=telemoveis_bd", "root", "1234");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException \$e) {
     die("Erro na ligação: " . \$e->getMessage());
 }
