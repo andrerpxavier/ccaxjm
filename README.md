@@ -24,7 +24,7 @@ Este repositório contém a infraestrutura e o código da aplicação **Catálog
    ```
 3. Aplique a configuração para criar todos os recursos (opção `-auto-approve` para não pedir confirmação):
    ```bash
-   terraform apply -auto-approve
+   terraform apply -var="subscription_id=<o-seu-id>" -auto-approve
    ```
 
 Após a conclusão, o Terraform irá apresentar o endereço IP público da máquina virtual Web. Utilize esse endereço no seu browser para aceder à aplicação.
