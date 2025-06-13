@@ -1,8 +1,8 @@
 
 Este repositório contém a infraestrutura e o código da aplicação **Catálogo de Telemóveis**. O objetivo é disponibilizar, em máquinas virtuais na Cloud do Azure, uma aplicação PHP com base de dados MySQL que permite gerir informação sobre telemóveis, no contexto do projeto Final da cadeira Cloud Computing do ISTEC realizado pelos alunos:
 
-2022001 - André Ferro Xavier
-2022012 - João Eduardo Malhadinha
+- 2022001 - **André Ferro Xavier**
+- 2022012 - **João Eduardo Malhadinhas**
 
 ## Conteúdo
 - **main.tf** – ficheiro Terraform responsável por criar os recursos necessários, nomeadamente grupo de recursos, rede virtual, máquinas virtuais (web e MySQL) e associações de segurança.
