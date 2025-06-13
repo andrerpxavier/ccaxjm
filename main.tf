@@ -19,6 +19,11 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
+variable "subscription_id" {
+  type        = string
+  description = "Azure subscription ID"
+}
+
 variable "location" {
   default = "South Africa North"
 }

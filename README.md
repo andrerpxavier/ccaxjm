@@ -26,6 +26,7 @@ Este repositório contém a infraestrutura e o código da aplicação **Catálog
    ```bash
    terraform apply -var="subscription_id=<o-seu-id>" -auto-approve
    ```
+Substitua `<o-seu-id>` pelo ID da sua subscrição Azure.
 
 Após a conclusão, o Terraform irá apresentar o endereço IP público da máquina virtual Web. Utilize esse endereço no seu browser para aceder à aplicação.
 
