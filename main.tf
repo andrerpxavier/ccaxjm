@@ -24,7 +24,7 @@ variable "location" {
 }
 
 resource "azurerm_resource_group" "main" {
-  name     = "projeto-telemoveis"
+  name     = "projeto-final-CloudComputing"
   location = var.location
 }
 
@@ -241,6 +241,9 @@ git clone https://github.com/andrerpxavier/ccaxjm .
 sed -i "s/\$host = '[^']*';/\$host = '${azurerm_network_interface.nic_mysql.private_ip_address}';/" mysqli_connect.php
 
 systemctl restart apache2
+
+sleep 10 
+
 CUSTOM_DATA
   )
 }
